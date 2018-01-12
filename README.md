@@ -57,6 +57,11 @@ variables:
    Default ``
    If set to `yes` then squid configuration templating removes all `cache_dir`
    lines, setting squid to memory only cache.
+ * `TLS_OPTIONS`
+   Default `NO_SSLv3,NO_TLSv1`
+   Allow overriding the default tls_outgoing_options supplied to OpenSSL. These
+   are safe defaults, but if you're in a really broken environment might not be
+   usable.
 
 # Proxychains
 By default squid in SSL MITM mode treats `cache_peer` entries quite differently.

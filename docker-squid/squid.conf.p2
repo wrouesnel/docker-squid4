@@ -19,7 +19,7 @@ maximum_object_size {{MAX_OBJECT_SIZE|default:"1536 MB"}}
 cache_mem {{MEM_CACHE_SIZE|default:"128 MB"}}
 
 tls_outgoing_options capath=/etc/ssl/certs \
-    options=NO_SSLv3,NO_TLSv1 \
+    options={{TLS_OPTIONS|default:"NO_SSLv3,NO_TLSv1"}} \
     cipher=ALL:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS
 
 http_port {{HTTP_PORT}} {% if MITM_PROXY|default:"" == "yes" %} ssl-bump \
