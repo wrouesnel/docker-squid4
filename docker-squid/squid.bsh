@@ -76,8 +76,7 @@ if [ "$DNS_OVER_HTTPS" = "yes" ]; then
         -primary-dns "$DNS_OVER_HTTPS_PREFIX_SERVER" \
         -fallback-dns "$DNS_OVER_HTTPS_SUFFIX_SERVER" \
         -no-fallthrough "$(echo $DNS_OVER_HTTPS_NO_FALLTHROUGH | tr -s ' ' ',')" \
-        -fallthrough-statues "$DNS_OVER_HTTPS_FALLTHROUGH_STATUSES"
-        &
+        -fallthrough-statuses "$DNS_OVER_HTTPS_FALLTHROUGH_STATUSES" &
     echo "Adding dns_nameservers line to squid.conf..."
     echo "dns_nameservers $(echo $DNS_OVER_HTTPS_LISTEN_ADDR | cut -d':' -f1)" >> /etc/squid4/squid.conf
 fi
