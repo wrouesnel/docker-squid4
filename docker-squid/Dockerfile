@@ -19,7 +19,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get build-dep -y squid && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev
 
-ARG SQUID_VERSION=4.0.21
+ARG SQUID_VERSION=4.0.25
 
 # TODO: verify the squid download with the signing key
 RUN mkdir /src \
@@ -64,7 +64,8 @@ RUN cd /src/squid && \
 		--with-filedescriptors=65536 \
 		--with-large-files \
 		--with-default-user=proxy \
-        	--disable-arch-native
+        --disable-arch-native \
+        --disable-ipv6
 		
 ARG CONCURRENCY=1
 
