@@ -30,7 +30,7 @@ http_port {{HTTP_PORT}} {% if MITM_PROXY|default:"" == "yes" %} ssl-bump \
 {% endif %}
 
 {% if MITM_PROXY|default:"" == "yes" %}
-ssl_bump server-first all
+ssl_bump bump all
 {% endif %}
 
 {% if ICP_PORT|default:"" != "" %}
