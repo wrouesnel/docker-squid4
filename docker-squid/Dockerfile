@@ -17,7 +17,7 @@ RUN cat /etc/apt/sources.list | grep -v '^#' | sed /^$/d > sources.tmp.1 && \
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get build-dep -y squid && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev
+    DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev nano
 
 ARG SQUID_VERSION=4.0.25
 
