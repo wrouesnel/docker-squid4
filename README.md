@@ -1,3 +1,25 @@
+# Status
+
+Highly experimental!
+
+This is a fork of https://github.com/wrouesnel/docker-squid4 that has
+been tested for very specific parameters only.
+
+See also: [README-Wire.md](./README-Wire.md)
+
+# Quicklinks
+
+- [upstream](https://github.com/wireapp/docker-squid4)
+- [alternative to docker-squid4](https://github.com/sonertari/SSLproxy/blob/master/NEWS.md)
+- [alternative to squid](https://smithproxy.org/)
+- [alternative to squid](https://github.com/sonertari/SSLproxy)
+- [squid homepage](http://www.squid-cache.org/)
+- [squid source](https://github.com/squid-cache/squid)
+- [haproxy homepage](http://www.haproxy.org/)
+- [blog post](https://blog.mailchannels.com/using-transport-layer-security-tls-with-a-transparent-smtp-proxy)
+- [blog post](https://tektab.com/2012/09/28/squid-transparent-proxy-for-https-ssl-traffic/)
+- [magazine article (german)](https://www.pcwelt.de/ratgeber/Mit-Squid-als-Proxy-Server-schneller-im-Netzwerk-surfen-5896242.html
+
 # Squid4 with SSL proxying
 
 This dockerfile builds a Squid 4 instance and includes all the necessary
@@ -21,17 +43,17 @@ variables:
  * `MITM_PROXY`
     If set, tries to enable MITM SSL proxy functionality (requires CERT and KEY)
  * `MITM_CERT`
-    If set, the given PEM certificate is copied and used as the CA authority for 
+    If set, the given PEM certificate is copied and used as the CA authority for
     MITM'ing connections.
  *  `MITM_KEY`
-    If set, the given PEM certificate is copied and used as the signing key for 
+    If set, the given PEM certificate is copied and used as the signing key for
     the MITM CA.
  * `VISIBLE_HOSTNAME`
     Default: `docker-squid4`
     Should be set to a unique value if you are chaining multiple proxy servers.
  * `MAX_CACHE_SIZE`
     Default: `40000`
-    Cache size in megabytes. The cache defaults to `/var/cache/squid4`. You 
+    Cache size in megabytes. The cache defaults to `/var/cache/squid4`. You
     should mount a volume here to make it persistent.
  * `MAX_OBJECT_SIZE`
     Default `"1536 MB"`
@@ -132,7 +154,7 @@ as a local MITM on your machine:
 sudo mkdir -p /srv/squid/cache
 docker run -it -p 3128:127.0.0.1:3128 --rm \
     -v /srv/squid/cache:/var/cache/squid4 \
-    -v /etc/ssl/certs:/etc/ssl/certs:ro \ 
+    -v /etc/ssl/certs:/etc/ssl/certs:ro \
     -v /etc/ssl/private/local_mitm.pem:/local-mitm.pem:ro \
     -v /etc/ssl/certs/local_mitm.pem:/local-mitm.crt:ro \
     -e MITM_CERT=/local-mitm.crt \
