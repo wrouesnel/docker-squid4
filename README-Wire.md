@@ -16,7 +16,7 @@ cp certs/wire.com.crt ./etc/ssl/certs/local_mitm.pem
 # docker-squid
 docker-squid consains a modified docker-squid container. It has been modified to build an experimental version of docker from Measurement Factory, and to install and use haproxy.
 
-It assumes that your internal network is 10.0.0.0ish.
+It requires the use of host based networking by default, but does not assume any IPs (excepting lo at 127.0.0.1).
 
 to build:
 
