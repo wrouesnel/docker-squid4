@@ -18,7 +18,22 @@ docker-squid consains a modified docker-squid container. It has been modified to
 
 It requires the use of host based networking by default, but does not assume any IPs (excepting lo at 127.0.0.1).
 
-to build:
+## Building:
+
+### Additional steps for building/running as a user:
+If you are building/running as a non-priveledged user (recommended):
+Set up docker to be built as your user. taken from https://superuser.com/questions/835696/how-solve-permission-problems-for-docker-in-ubuntu
+
+```
+sudo groupadd docker
+sudo gpasswd -a <YOUR_USERNAME_HERE> docker
+sudo systemctl restart snap.docker.dockerd
+```
+
+Log out, and log in again to make your group membership active.
+
+### Kicking off the build:
+If you followed the previous step, you can run this as the user you used, in that step. otherwise, as root:
 
 ```sh
 docker build .
@@ -29,7 +44,8 @@ When this completes, it will give you an image ID on the last line of output, wh
 docker tag <image_id> squid
 ```
 
-Alternatively, you can pull it from quay.io/wire:
+## Downloading:
+Alternatively, you can pull our most recent build from quay.io/wire:
 
 ```sh
 export SQUID_SHA256=3c6af3b48ca03f134aad4f5aeb6eaee8093dbc185a874683cdb6f67a252124b8
@@ -39,7 +55,9 @@ docker inspect --format='{{index .RepoDigests 0}}' quay.io/wire/squid@sha256:$SQ
 docker tag quay.io/wire/squid@sha256:$SQUID_SHA256 squid
 ```
 
-You can now launch the image with run.sh
+## Using
+
+Once you have either built and tagged your image, or downloaded an image, you can launch the image with run.sh
 
 ```
 ./run.sh
