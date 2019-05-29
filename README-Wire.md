@@ -4,13 +4,13 @@ This repo (cloned from https://github.com/fgrehm/squid3-ssl-docker) contains two
 
 You'll want to run this to create your man-in-the-middle SSL certificate.
 ```
-cd docker-squid4/mk-ca-certs
+cd docker-squid4/mk-ca-cert
 ./mk-certs
 cd ../docker-squid
-mkdir -p ./etc/ssl/private/
-mkdir -p ./etc/ssl/certs
-cp certs/private.pem ./etc/ssl/private/local_mitm.pem
-cp certs/wire.com.crt ./etc/ssl/certs/local_mitm.pem
+mkdir -p etc/ssl/private
+mkdir -p etc/ssl/certs
+cp ../mk-ca-cert/certs/private.pem ./etc/ssl/private/local_mitm.pem
+cp ../mk-ca-cert/certs/wire.com.crt ./etc/ssl/certs/local_mitm.pem
 ```
 
 # docker-squid

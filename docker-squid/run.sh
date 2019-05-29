@@ -11,7 +11,7 @@ mkdir -p $(pwd)/etc/ssl/private
 
 docker run -it $NETWORKING --rm \
     -v $(pwd)/srv/squid/cache:/var/cache/squid4 \
-    -v $(pwd)/etc/ssl/certs:/etc/ssl/certs:ro \
+    -v /etc/ssl/certs:/etc/ssl/certs:ro \
     -v $(pwd)/etc/ssl/private/local_mitm.pem:/local-mitm.pem:ro \
     -v $(pwd)/etc/ssl/certs/local_mitm.pem:/local-mitm.crt:ro \
     -e MITM_CERT=/local-mitm.crt \
