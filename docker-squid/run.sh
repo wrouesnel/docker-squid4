@@ -1,23 +1,33 @@
 #!/bin/bash
 
+set -ex
+
+IMG_TAG=quay.io/wire/squid@sha256:0df70cbcd1faa7876e89d65d215d86e1518cc45e24c7bf8891bc1b57563961fa
+
 #RUN_IN_SHELL="--entrypoint /bin/bash"
 
 NETWORKING="--dns=8.8.8.8 --network=host"
 #NETWORKING="-p 3128:3128 -p 3129:3129"
 
-mkdir -p $(pwd)/srv/squid/cache
-mkdir -p $(pwd)/etc/ssl/certs
-mkdir -p $(pwd)/etc/ssl/private
+SETUP_TLS="
+    -v /etc/ssl/certs:/etc/ssl/certs:ro"
 
-docker run -it $NETWORKING --rm \
-    -v $(pwd)/srv/squid/cache:/var/cache/squid4 \
-    -v /etc/ssl/certs:/etc/ssl/certs:ro \
-    -v $(pwd)/etc/ssl/private/local_mitm.pem:/local-mitm.pem:ro \
-    -v $(pwd)/etc/ssl/certs/local_mitm.pem:/local-mitm.crt:ro \
-    -e MITM_CERT=/local-mitm.crt \
-    -e MITM_KEY=/local-mitm.pem \
-    -e MITM_PROXY=yes \
-    -e MAX_OBJECT_SIZE="100000 MB" \
-    -e MEM_CACHE_SIZE="1000000 MB" \
-    ${RUN_IN_SHELL} \
-    squid
+test -e ./mnt/cert/local-mitm-cert.pem || exit 1
+test -e ./mnt/cert/local-mitm-key.pem || exit 1
+SETUP_MITM="
+    -e MITM_PROXY=yes
+    -e MITM_CERT=/mnt/cert/local-mitm-cert.pem
+    -e MITM_KEY=/mnt/cert/local-mitm-key.pem"
+
+mkdir -p ./mnt/cache/
+mkdir -p ./mnt/log/
+SETUP_CFG="
+    -v $(pwd)/mnt/:/mnt/"
+
+docker run -it --rm \
+       ${RUN_IN_SHELL} \
+       ${NETWORKING} \
+       ${SETUP_TLS} \
+       ${SETUP_MITM} \
+       ${SETUP_CFG} \
+       ${IMG_TAG}

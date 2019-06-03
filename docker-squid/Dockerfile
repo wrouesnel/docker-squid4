@@ -104,9 +104,8 @@ RUN cd /src/squid && \
 
 # (in the squid build commands above, `--enable-ipf-transparent` would yield a ./configure error.)
 
-COPY squid.conf /etc/squid4/squid.conf
-COPY squid_and_haproxy.sh /squid_and_haproxy.sh
-COPY haproxy.cfg /etc/haproxy/haproxy.cfg
+# everything we share between host and container is here:
+RUN mkdir -p ./mnt/
 
 # Configuration environment
 ENV MITM_PROXY= \
@@ -116,4 +115,4 @@ ENV MITM_PROXY= \
 EXPOSE 3128
 EXPOSE 3129
 
-ENTRYPOINT [ "/squid_and_haproxy.sh" ]
+ENTRYPOINT [ "/mnt/entrypoint.sh" ]
