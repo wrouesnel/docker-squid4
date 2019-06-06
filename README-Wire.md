@@ -1,4 +1,7 @@
-This repo (cloned from https://github.com/fgrehm/squid3-ssl-docker) contains two directories:
+This repo (cloned from https://github.com/fgrehm/squid3-ssl-docker) contains instructions and tools for setting up a transparent HAPROXY/Squid configuration.
+You're going to want to clone it (from https://github.com/wireapp/docker-squid4.git).
+
+This repo contains two directories:
 
 # mk-ca-cert
 
@@ -8,8 +11,8 @@ cd docker-squid4/mk-ca-cert
 ./mk-certs
 cd ../docker-squid
 mkdir -p ./mnt/cert
-cp ../mk-ca-cert/certs/private.pem ./mnt/cert/local-mitm-cert.pem
-cp ../mk-ca-cert/certs/wire.com.crt ./mnt/cert/local-mitm-key.pem
+cp ../mk-ca-cert/certs/private.pem ./mnt/cert/local-mitm-key.pem
+cp ../mk-ca-cert/certs/wire.com.crt ./mnt/cert/local-mitm-cert.pem
 ```
 
 # docker-squid
@@ -19,9 +22,16 @@ It requires the use of host based networking by default, but does not assume any
 
 ## Building:
 
+
+* Make sure you have installed the docker snap.
+```
+sudo snap install docker
+```
+
 ### Additional steps for building/running as a user:
 If you are building/running as a non-priveledged user (recommended):
-Set up docker to be built as your user. taken from https://superuser.com/questions/835696/how-solve-permission-problems-for-docker-in-ubuntu
+
+* Set up docker to be built as your user. taken from https://superuser.com/questions/835696/how-solve-permission-problems-for-docker-in-ubuntu
 
 ```
 sudo groupadd docker
@@ -29,16 +39,16 @@ sudo gpasswd -a <YOUR_USERNAME_HERE> docker
 sudo systemctl restart snap.docker.dockerd
 ```
 
-Log out, and log in again to make your group membership active.
+* Log out, and log in again to make your group membership active.
 
 ### Kicking off the build:
-If you followed the previous step, you can run this as the user you used, in that step. otherwise, as root:
-
+* If you followed the previous step, you can run this as the user you used, in that step. otherwise, as root:
 ```sh
+cd docker-squid4/docker-squid
 docker build .
 ```
 
-When this completes, it will give you an image ID on the last line of output, which will look like ```Successfully built fd0a530f522a```. Set a tag refering to that image ID, so our run script can launch the image.
+* When this completes, it will give you an image ID on the last line of output, which will look like ```Successfully built fd0a530f522a```. Set a tag refering to that image ID, so our run script can launch the image.
 ```
 docker tag <image_id> squid
 ```
@@ -56,11 +66,20 @@ docker tag quay.io/wire/squid@sha256:$SQUID_SHA256 squid
 
 ## Using
 
-Once you have either built and tagged your image, or downloaded an image, you can launch the image with run.sh
+* If you have built your image locally, you must set IMG_TAG in run.sh to 'squid'.
 
+* Once you have either built and tagged your image, or downloaded an image, you can launch the image with run.sh:
 ```
 ./run.sh
 ```
+
+
+* In order for transparent services to be available, you have to run the "/root/sbin/iptables" script we copied earlier:
+```
+sudo /root/sbin/iptables
+```
+* Please note that the interface name in this file must be correct, and may need changed if the interface you are providing services on is not 'ens4'.
+
 
 
 # interpreting squid's access.log to export info on cache.
@@ -81,7 +100,6 @@ You can put the resulting output into a file, add '[', ']' around it and use it 
 ```bash
 perl -ne '/dnsmasq.*query\[\w+\]\s+(\S+)\sfrom/ && print "$1\n"' /var/log/syslog | sort | uniq
 ```
-
 
 # how to set an explicit/visible proxy to various bits of software:
 
