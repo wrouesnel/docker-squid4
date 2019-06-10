@@ -22,7 +22,6 @@ It requires the use of host based networking by default, but does not assume any
 
 ## Building:
 
-
 * Make sure you have installed the docker snap.
 ```
 sudo snap install docker
@@ -32,7 +31,6 @@ sudo snap install docker
 If you are building/running as a non-priveledged user (recommended):
 
 * Set up docker to be built as your user. taken from https://superuser.com/questions/835696/how-solve-permission-problems-for-docker-in-ubuntu
-
 ```
 sudo groupadd docker
 sudo gpasswd -a <YOUR_USERNAME_HERE> docker
@@ -40,6 +38,8 @@ sudo systemctl restart snap.docker.dockerd
 ```
 
 * Log out, and log in again to make your group membership active.
+TODO: find out what services need to be restarted.
+* Reboot, if ubuntu 16.
 
 ### Kicking off the build:
 * If you followed the previous step, you can run this as the user you used, in that step. otherwise, as root:
@@ -51,6 +51,11 @@ docker build .
 * When this completes, it will give you an image ID on the last line of output, which will look like ```Successfully built fd0a530f522a```. Set a tag refering to that image ID, so our run script can launch the image.
 ```
 docker tag <image_id> squid
+```
+
+* Edit run.sh. comment out the current IMG_TAG, and add a new line:
+```
+IMG_TAG=squid
 ```
 
 ## Downloading:
@@ -66,21 +71,16 @@ docker tag quay.io/wire/squid@sha256:$SQUID_SHA256 squid
 
 ## Using
 
-* If you have built your image locally, you must set IMG_TAG in run.sh to 'squid'.
-
 * Once you have either built and tagged your image, or downloaded an image, you can launch the image with run.sh:
 ```
 ./run.sh
 ```
 
-
-* In order for transparent services to be available, you have to run the "/root/sbin/iptables" script we copied earlier:
+* In order for transparent services to be available, you have to run the "/root/sbin/iptables" script, from the wire-server-deploy-networkless instructions:
 ```
 sudo /root/sbin/iptables
 ```
 * Please note that the interface name in this file must be correct, and may need changed if the interface you are providing services on is not 'ens4'.
-
-
 
 # interpreting squid's access.log to export info on cache.
 
@@ -93,7 +93,6 @@ cat mnt/log/access.log | \
 ```
 
 You can put the resulting output into a file, add '[', ']' around it and use it as input for [./parse-accesslog.hs](./parse-accesslog.hs).
-
 
 # keeping track of dns queries on VMs
 
@@ -118,4 +117,3 @@ with them.
 
 ```sh
 echo 'Acquire::http::Proxy "http://10.0.0.1:3128/";' > /etc/apt/apt.conf.d/10proxy
-```
