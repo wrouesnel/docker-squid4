@@ -18,7 +18,7 @@ See also: [README-Wire.md](./README-Wire.md)
 - [haproxy homepage](http://www.haproxy.org/)
 - [blog post](https://blog.mailchannels.com/using-transport-layer-security-tls-with-a-transparent-smtp-proxy)
 - [blog post](https://tektab.com/2012/09/28/squid-transparent-proxy-for-https-ssl-traffic/)
-- [magazine article (german)](https://www.pcwelt.de/ratgeber/Mit-Squid-als-Proxy-Server-schneller-im-Netzwerk-surfen-5896242.html
+- [magazine article (german)](https://www.pcwelt.de/ratgeber/Mit-Squid-als-Proxy-Server-schneller-im-Netzwerk-surfen-5896242.html)
 
 # Squid4 with SSL proxying
 
