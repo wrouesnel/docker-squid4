@@ -6,11 +6,13 @@ IMG_TAG=quay.io/wire/squid@sha256:0df70cbcd1faa7876e89d65d215d86e1518cc45e24c7bf
 
 #RUN_IN_SHELL="--entrypoint /bin/bash"
 
-NETWORKING="--dns=8.8.8.8 --network=host"
+NETWORKING="--network=host"
 #NETWORKING="-p 3128:3128 -p 3129:3129"
 
 SETUP_TLS="
-    -v /etc/ssl/certs:/etc/ssl/certs:ro"
+    -v /etc/ssl/certs:/etc/ssl/certs:ro
+    -v /usr/share/ca-certificates:/usr/share/ca-certificates:ro
+    -v /usr/local/share/ca-certificates:/usr/local/share/ca-certificates:ro"
 
 test -e ./mnt/cert/local-mitm-cert.pem || exit 1
 test -e ./mnt/cert/local-mitm-key.pem || exit 1
