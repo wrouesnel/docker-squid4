@@ -123,7 +123,7 @@ if [ "$PROXYCHAIN" = "yes" ]; then
     PID=$!
 else
     # Start squid normally
-    squid -N 2>&1 &
+    squid --foreground 2>&1 &
     PID=$!
 fi
 
