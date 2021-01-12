@@ -1,6 +1,6 @@
 ARG DOCKER_PREFIX=
 
-FROM ${DOCKER_PREFIX}ubuntu:artful
+FROM ${DOCKER_PREFIX}ubuntu:20.04
 
 ARG TRUST_CERT=
 
@@ -19,7 +19,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get build-dep -y squid && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y wget tar xz-utils libssl-dev nano
 
-ARG SQUID_VERSION=4.0.25
+ARG SQUID_VERSION=4.13
 
 # TODO: verify the squid download with the signing key
 RUN mkdir /src \
@@ -44,7 +44,7 @@ RUN cd /src/squid && \
 		--enable-underscores \
 		--enable-icap-client \
 		--enable-follow-x-forwarded-for \
-		--enable-auth-basic="DB,fake,getpwnam,LDAP,NCSA,NIS,PAM,POP3,RADIUS,SASL,SMB" \
+		--enable-auth-basic="DB,fake,getpwnam,LDAP,NCSA,PAM,POP3,RADIUS,SASL,SMB" \
 		--enable-auth-digest="file,LDAP" \
 		--enable-auth-negotiate="kerberos,wrapper" \
 		--enable-auth-ntlm="fake" \
@@ -67,7 +67,7 @@ RUN cd /src/squid && \
         --disable-arch-native \
         --disable-ipv6
 		
-ARG CONCURRENCY=1
+ARG CONCURRENCY=4
 
 RUN cd /src/squid && \
     make -j$CONCURRENCY && \
